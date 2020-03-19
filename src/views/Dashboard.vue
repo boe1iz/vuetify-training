@@ -1,25 +1,47 @@
 <template>
   <v-container>
     <h1>Dashboard</h1>
-    <v-data-table
-      :headers="headers"
-      :items="desserts"
-      :items-per-page="5"
-      class="elevation-1"
-      @click:row="selectRow"
-    ></v-data-table>
-    <v-snackbar v-model="snackbar">
-      {{ currentItem }}
-      <v-btn color="pink" text @click="snackbar = false">
-        Close
-      </v-btn>
-    </v-snackbar>
+    <v-row>
+      <v-col v-for="sale in sales" :key="`${sale.title}`">
+        <SalesGraph :sale="sale" />
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col v-for="statistic in statistics" :key="`${statistic.title}`">
+        <StatisticsCard :statistic="statistic" />
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="8">
+        <v-data-table
+          :headers="headers"
+          :items="desserts"
+          :items-per-page="5"
+          class="elevation-1"
+          @click:row="selectRow"
+        ></v-data-table>
+        <v-snackbar v-model="snackbar">
+          {{ currentItem }}
+          <v-btn color="pink" text @click="snackbar = false">
+            Close
+          </v-btn>
+        </v-snackbar>
+      </v-col>
+      <v-col>
+        <EventTimeLine />
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
 <script>
 export default {
   name: 'Dashboard',
+  components: {
+    SalesGraph: () => import('@/components/SalesGraph.vue'),
+    StatisticsCard: () => import('@/components/StatisticsCard.vue'),
+    EventTimeLine: () => import('@/components/EventTimeLine.vue'),
+  },
   data() {
     return {
       snackbar: false,
@@ -117,6 +139,41 @@ export default {
           carbs: 65,
           protein: 7,
           iron: '6%',
+        },
+      ],
+      sales: [
+        {
+          title: 'Car',
+          sale: '1.500',
+          image: 'https://cdn.vuetifyjs.com/images/cards/cooking.png',
+        },
+        {
+          title: 'Home',
+          sale: '10.500',
+          image: 'https://cdn.vuetifyjs.com/images/cards/sunshine.jpg',
+        },
+        {
+          title: 'Computer',
+          sale: '250',
+          image: 'https://cdn.vuetifyjs.com/images/cards/mountain.jpg',
+        },
+      ],
+      statistics: [
+        {
+          title: 'Employees',
+          stat: '65',
+        },
+        {
+          title: 'Ream Sold',
+          stat: '983.000',
+        },
+        {
+          title: 'Rating',
+          stat: '4.5',
+        },
+        {
+          title: 'Revenue',
+          stat: '$2.3M',
         },
       ],
     }
